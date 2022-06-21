@@ -1,42 +1,129 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://icon.png" type="Texture" id=1]
+[ext_resource path="res://world_tileset.tres" type="TileSet" id=1]
 [ext_resource path="res://Steve.tscn" type="PackedScene" id=2]
+[ext_resource path="res://pass_through_tileset.tres" type="TileSet" id=3]
+[ext_resource path="res://ASSETS/background/set2_background.png" type="Texture" id=4]
+[ext_resource path="res://ASSETS/background/set2_tiles.png" type="Texture" id=5]
+[ext_resource path="res://Coin.tscn" type="PackedScene" id=6]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 96, 32.5 )
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 351.5, 31 )
+extents = Vector2( 160, 32 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 1055, 72.5 )
 
 [node name="Level1" type="Node"]
 
-[node name="floor" type="StaticBody2D" parent="."]
-position = Vector2( 616, 453 )
-__meta__ = {
-"_edit_group_": true
-}
+[node name="Tiles One-Way" type="TileMap" parent="."]
+tile_set = ExtResource( 3 )
+collision_layer = 2
+collision_mask = 49
+format = 1
+tile_data = PoolIntArray( 2, 1, 0, 3, 2, 0, 4, 2, 0, 5, 2, 0, 6, 3, 0, 65538, 0, 0, 65539, 0, 0, 65540, 0, 0, 65541, 0, 0, 65542, 0, 0, 131074, 0, 0, 131075, 0, 0, 131076, 0, 0, 131077, 0, 0, 131078, 0, 0, 196610, 0, 0, 196611, 0, 0, 196612, 0, 0, 196613, 0, 0, 196614, 0, 0, 262146, 2, 0, 262147, 2, 0, 262148, 2, 0, 262149, 0, 0, 262150, 0, 0, 327682, 0, 0, 327683, 0, 0, 327684, 0, 0, 327685, 0, 0, 327686, 0, 0, 393218, 0, 0, 393219, 0, 0, 393220, 0, 0, 393221, 0, 0, 393222, 0, 0, 458754, 0, 0, 458755, 0, 0, 458756, 0, 0, 458757, 0, 0, 458758, 0, 0 )
 
-[node name="Sprite" type="Sprite" parent="floor"]
-position = Vector2( -261, -1 )
-scale = Vector2( 10.959, 1 )
-texture = ExtResource( 1 )
+[node name="StaticBody2D" type="StaticBody2D" parent="Tiles One-Way"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="floor"]
-position = Vector2( -259.5, 0 )
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tiles One-Way/StaticBody2D"]
+position = Vector2( 224, 287.5 )
+shape = SubResource( 1 )
+one_way_collision = true
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Tiles One-Way/StaticBody2D"]
+position = Vector2( 288, 32 )
 shape = SubResource( 2 )
+one_way_collision = true
 
-[node name="floor2" type="StaticBody2D" parent="."]
-position = Vector2( 1061, 211 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="Sprite" type="Sprite" parent="floor2"]
-position = Vector2( -261, -1 )
-scale = Vector2( 10.959, 1 )
-texture = ExtResource( 1 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="floor2"]
-position = Vector2( -259.5, 0 )
-shape = SubResource( 2 )
+[node name="Tiles Solid" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+collision_layer = 2
+collision_mask = 49
+format = 1
+tile_data = PoolIntArray( -65542, 0, 0, -131062, 4, 0, -131061, 5, 0, -131053, 4, 0, -131052, 2, 0, -131051, 2, 0, -131050, 2, 0, -131049, 2, 0, -131048, 2, 0, -131047, 2, 0, -131046, 2, 0, -131045, 5, 0, -6, 0, 0, 65530, 0, 0, 131066, 0, 0, 65550, 4, 0, 65551, 2, 0, 65552, 5, 0, 196602, 0, 0, 262138, 0, 0, 327674, 0, 0, 262153, 4, 0, 262154, 2, 0, 262155, 2, 0, 262156, 5, 0, 262162, 4, 0, 262163, 2, 0, 262164, 5, 0, 393210, 0, 0, 458746, 0, 0, 524282, 0, 0, 589819, 1, 0, 589820, 2, 0, 589821, 2, 0, 589822, 2, 0, 589823, 2, 0, 524288, 2, 0, 524289, 2, 0, 524290, 2, 0, 524291, 2, 0, 524292, 2, 0, 524293, 2, 0, 524294, 2, 0, 524295, 2, 0, 524296, 2, 0, 524297, 2, 0, 524298, 2, 0, 524299, 2, 0, 524300, 2, 0, 524301, 2, 0, 524302, 3, 0, 524310, 1, 0, 524311, 2, 0, 524312, 2, 0, 524313, 2, 0, 524314, 2, 0, 524315, 2, 0, 524316, 2, 0, 524317, 2, 0, 524318, 2, 0, 524319, 2, 0, 524320, 2, 0, 524321, 2, 0, 524322, 2, 0, 524323, 2, 0, 524324, 2, 0, 524325, 2, 0, 524326, 2, 0, 524327, 2, 0, 524328, 3, 0, 655355, 0, 0, 655356, 0, 0, 655357, 0, 0, 655358, 0, 0, 655359, 0, 0, 589824, 0, 0, 589825, 0, 0, 589826, 0, 0, 589827, 0, 0, 589828, 0, 0, 589829, 0, 0, 589830, 0, 0, 589831, 0, 0, 589832, 0, 0, 589833, 0, 0, 589834, 0, 0, 589835, 0, 0, 589836, 0, 0, 589837, 0, 0, 589838, 0, 0, 589846, 0, 0, 589847, 0, 0, 589848, 0, 0, 589849, 0, 0, 589850, 0, 0, 589851, 0, 0, 589852, 0, 0, 589853, 0, 0, 589854, 0, 0, 589855, 0, 0, 589856, 0, 0, 589857, 0, 0, 589858, 0, 0, 589859, 0, 0, 589860, 0, 0, 589861, 0, 0, 589862, 0, 0, 589863, 0, 0, 589864, 0, 0, 720891, 0, 0, 720892, 0, 0, 720893, 0, 0, 720894, 0, 0, 720895, 0, 0, 655360, 0, 0, 655361, 0, 0, 655362, 0, 0, 655363, 0, 0, 655364, 0, 0, 655365, 0, 0, 655366, 0, 0, 655367, 0, 0, 655368, 0, 0, 655369, 0, 0, 655370, 0, 0, 655371, 0, 0, 655372, 0, 0, 655373, 0, 0, 655374, 0, 0, 655382, 0, 0, 655383, 0, 0, 655384, 0, 0, 655385, 0, 0, 655386, 0, 0, 655387, 0, 0, 655388, 0, 0, 655389, 0, 0, 655390, 0, 0, 655391, 0, 0, 655392, 0, 0, 655393, 0, 0, 655394, 0, 0, 655395, 0, 0, 655396, 0, 0, 655397, 0, 0, 655398, 0, 0, 655399, 0, 0, 655400, 0, 0, 786427, 0, 0, 786428, 0, 0, 786429, 0, 0, 786430, 0, 0, 786431, 0, 0, 720896, 0, 0, 720897, 0, 0, 720898, 0, 0, 720899, 0, 0, 720900, 0, 0, 720901, 0, 0, 720902, 0, 0, 720903, 0, 0, 720904, 0, 0, 720905, 0, 0, 720906, 0, 0, 720907, 0, 0, 720908, 0, 0, 720909, 0, 0, 720910, 0, 0, 720918, 0, 0, 720919, 0, 0, 720920, 0, 0, 720921, 0, 0, 720922, 0, 0, 720923, 0, 0, 720924, 0, 0, 720925, 0, 0, 720926, 0, 0, 720927, 0, 0, 720928, 0, 0, 720929, 0, 0, 720930, 0, 0, 720931, 0, 0, 720932, 0, 0, 720933, 0, 0, 720934, 0, 0, 720935, 0, 0, 720936, 0, 0 )
 
 [node name="Steve" parent="." instance=ExtResource( 2 )]
-position = Vector2( 243, 123 )
+position = Vector2( -153, 295 )
+collision_mask = 30
+
+[node name="Camera2D" type="Camera2D" parent="Steve"]
+current = true
+limit_left = -320
+limit_top = -500
+limit_right = 3000
+limit_bottom = 700
+limit_smoothed = true
+drag_margin_h_enabled = true
+drag_margin_v_enabled = true
+drag_margin_left = 0.3
+drag_margin_right = 0.3
+editor_draw_limits = true
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="Purple Sky" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2( 1280, 960 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/Purple Sky"]
+scale = Vector2( 2, 2 )
+texture = ExtResource( 4 )
+centered = false
+
+[node name="Back Blocks" type="ParallaxLayer" parent="ParallaxBackground"]
+modulate = Color( 0.690196, 0.231373, 0.741176, 0.262745 )
+motion_scale = Vector2( 0.25, 0.25 )
+motion_offset = Vector2( -500, 0 )
+motion_mirroring = Vector2( 2560, 1920 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/Back Blocks"]
+scale = Vector2( 4, 4 )
+texture = ExtResource( 5 )
+centered = false
+
+[node name="MIddle Blocks" type="ParallaxLayer" parent="ParallaxBackground"]
+modulate = Color( 0.329412, 0.392157, 0.517647, 0.690196 )
+motion_scale = Vector2( 0.4, 0.4 )
+motion_offset = Vector2( -500, -500 )
+motion_mirroring = Vector2( 1600, 1200 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/MIddle Blocks"]
+scale = Vector2( 2.5, 2.5 )
+texture = ExtResource( 5 )
+centered = false
+
+[node name="Nearby Blocks" type="ParallaxLayer" parent="ParallaxBackground"]
+modulate = Color( 0.447059, 0.219608, 0.219608, 0.47451 )
+motion_scale = Vector2( 0.7, 0.7 )
+motion_mirroring = Vector2( 1120, 840 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/Nearby Blocks"]
+scale = Vector2( 1.75, 1.75 )
+texture = ExtResource( 5 )
+centered = false
+
+[node name="Fallzone" type="Area2D" parent="."]
+position = Vector2( -368, 796 )
+collision_layer = 4
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Fallzone"]
+position = Vector2( 2246, 62.5 )
+shape = SubResource( 3 )
+
+[node name="Coin1" parent="." instance=ExtResource( 6 )]
+position = Vector2( 246, 174 )
+collision_layer = 8
+
+[node name="Coin2" parent="." instance=ExtResource( 6 )]
+position = Vector2( 359, -72 )
+collision_layer = 8
+
+[node name="Coin3" parent="." instance=ExtResource( 6 )]
+position = Vector2( 219, -72 )
+collision_layer = 8
+
+[connection signal="body_entered" from="Fallzone" to="Steve" method="_on_Fallzone_body_entered"]
