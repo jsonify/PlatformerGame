@@ -43,8 +43,10 @@ func _on_top_checker_body_entered(body):
 
 
 func _on_sides_checker_body_entered(body):
-	print("ouch!")
-	body.ouch(position.x)
+	if body.get_collision_layer() == 1:
+		body.ouch(position.x)
+	elif body.get_collision_layer() == 32:
+		queue_free()
 
 
 func _on_Timer_timeout():

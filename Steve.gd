@@ -6,11 +6,11 @@ var velocity := Vector2.ZERO
 var coins := 0
 const SPEED := 180
 const RUNSPEED := 400
-const JUMPFORCE := -1100
 const GRAVITY := 35
+const JUMPFORCE := -1100
+const FIREBALL := preload("res://Fireball.tscn")
 
 func _physics_process(delta):
-	print(state)
 	match state:
 		States.AIR:
 			if is_on_floor():
@@ -18,29 +18,36 @@ func _physics_process(delta):
 				continue
 			$Sprite.play("air")
 			if Input.is_action_pressed("right"):
-				velocity.x = SPEED
+				velocity.x = lerp(velocity.x, SPEED, 0.1) if velocity.x < SPEED else lerp(velocity.x, SPEED, 0.03)
 				$Sprite.flip_h = false
 			elif Input.is_action_pressed("left"):
-				velocity.x = -SPEED
+				velocity.x = lerp(velocity.x, -SPEED, 0.1) if velocity.x > -SPEED else lerp(velocity.x, -SPEED, 0.03)
 				$Sprite.flip_h = true
 			else:
 				velocity.x = lerp(velocity.x, 0, 0.2)
-				move_and_fall()
+			move_and_fall()
+			fire()
+			
 		States.FLOOR:
-			if not is_on_floor():
+			if !is_on_floor():
 				state = States.AIR
+				continue
 			if Input.is_action_pressed("right"):
 				if Input.is_action_pressed("run"):
-					velocity.x = RUNSPEED
+					velocity.x = lerp(velocity.x, RUNSPEED, 0.1)
+					$Sprite.set_speed_scale(1.8)
 				else:
-					velocity.x = SPEED
+					velocity.x = lerp(velocity.x, SPEED, 0.1)
+					$Sprite.set_speed_scale(1.0)					
 				$Sprite.play("walk")
 				$Sprite.flip_h = false
 			elif Input.is_action_pressed("left"):
 				if Input.is_action_pressed("run"):
-					velocity.x = -RUNSPEED
+					velocity.x = lerp(velocity.x, -RUNSPEED, 0.1)
+					$Sprite.set_speed_scale(1.8)
 				else:
-					velocity.x = -SPEED
+					velocity.x = lerp(velocity.x, -SPEED, 0.1)
+					$Sprite.set_speed_scale(1.0)
 				$Sprite.play("walk")
 				$Sprite.flip_h = true
 			else:
@@ -51,10 +58,17 @@ func _physics_process(delta):
 				velocity.y = JUMPFORCE
 				$SoundJump.play()
 				state = States.AIR
-				
 			move_and_fall()
-		
-	
+			fire()
+			
+func fire():
+	if Input.is_action_just_pressed("fire"):
+		var direction = 1 if !$Sprite.flip_h else -1
+		var f = FIREBALL.instance()
+		f.direction = direction
+		get_parent().add_child(f)
+		f.position.y = position.y
+		f.position.x = position.x +25 * direction
 
 func move_and_fall():
 	velocity.y = velocity.y + GRAVITY
