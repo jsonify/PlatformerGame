@@ -4,6 +4,8 @@ enum States {AIR = 1, FLOOR, LADDER, WALL}
 var state = States.AIR
 var velocity := Vector2.ZERO
 var coins := 0
+var direction := 1
+var last_jump_direction := 0
 const SPEED := 180
 const RUNSPEED := 400
 const GRAVITY := 35
@@ -11,10 +13,15 @@ const JUMPFORCE := -1100
 const FIREBALL := preload("res://Fireball.tscn")
 
 func _physics_process(delta):
+	print(is_near_wall())
 	match state:
 		States.AIR:
 			if is_on_floor():
+				last_jump_direction = 0
 				state = States.FLOOR
+				continue
+			elif is_near_wall():
+				state = States.WALL
 				continue
 			$Sprite.play("air")
 			if Input.is_action_pressed("right"):
@@ -25,7 +32,8 @@ func _physics_process(delta):
 				$Sprite.flip_h = true
 			else:
 				velocity.x = lerp(velocity.x, 0, 0.2)
-			move_and_fall()
+			set_direction()
+			move_and_fall(false)
 			fire()
 			
 		States.FLOOR:
@@ -58,22 +66,52 @@ func _physics_process(delta):
 				velocity.y = JUMPFORCE
 				$SoundJump.play()
 				state = States.AIR
-			move_and_fall()
+			set_direction()
+			move_and_fall(false)
 			fire()
+		States.WALL:
+			if is_on_floor():
+				last_jump_direction = 0
+				state = States.FLOOR
+				continue
+			elif !is_near_wall():
+				state = States.AIR
+				continue
+			$Sprite.play("wall")
 			
+			if direction != last_jump_direction and Input.is_action_pressed("jump") and ((Input.is_action_pressed("left") and direction == 1) or (Input.is_action_pressed("right") and direction == -1)):
+				last_jump_direction = direction
+				velocity.x = 450 * -direction
+				velocity.y = JUMPFORCE * 0.7
+				$SoundJump.play()
+				state = States.AIR
+			
+			
+			move_and_fall(true)
+			
+func set_direction():
+	direction = 1 if !$Sprite.flip_h else -1
+	$Wallchecker.rotation_degrees = 90 * -direction
+			
+func is_near_wall():
+	return $Wallchecker.is_colliding()
+
 func fire():
-	if Input.is_action_just_pressed("fire"):
-		var direction = 1 if !$Sprite.flip_h else -1
+	if Input.is_action_just_pressed("fire") and !is_near_wall():
 		var f = FIREBALL.instance()
 		f.direction = direction
 		get_parent().add_child(f)
 		f.position.y = position.y
-		f.position.x = position.x +25 * direction
+		f.position.x = position.x + 25 * direction
 
-func move_and_fall():
-	velocity.y = velocity.y + GRAVITY
-	velocity = move_and_slide(velocity, Vector2.UP)
+func move_and_fall(slow_fall:bool):
+	velocity.y = velocity.y + GRAVITY	
+	if slow_fall:
+		velocity.y = clamp(velocity.y, JUMPFORCE, 200)
 	
+	velocity = move_and_slide(velocity, Vector2.UP)
+
+
 
 func _on_Fallzone_body_entered(body: Node) -> void:
 	get_tree().change_scene("res://GameOver.tscn")

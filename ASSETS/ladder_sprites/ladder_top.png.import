@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/168467368-56921c1d-103b-4549-8aed-13f39a234c8b.png-be5c7c338d16c1d9eccf42f43d6b0e03.stex"
+path="res://.import/ladder_top.png-e0bbb817cce8492342cbede248718d2d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/gdUnit3/src/update/168467368-56921c1d-103b-4549-8aed-13f39a234c8b.png"
-dest_files=[ "res://.import/168467368-56921c1d-103b-4549-8aed-13f39a234c8b.png-be5c7c338d16c1d9eccf42f43d6b0e03.stex" ]
+source_file="res://ASSETS/ladder_sprites/ladder_top.png"
+dest_files=[ "res://.import/ladder_top.png-e0bbb817cce8492342cbede248718d2d.stex" ]
 
 [params]
 
