@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://steve_spriteframes.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://Steve.gd" type="Script" id=2]
@@ -8,6 +8,9 @@
 radius = 27.0
 height = 14.2642
 
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 32.0001, 8 )
+
 [node name="Steve" type="KinematicBody2D"]
 script = ExtResource( 2 )
 __meta__ = {
@@ -16,7 +19,7 @@ __meta__ = {
 
 [node name="Sprite" type="AnimatedSprite" parent="."]
 frames = ExtResource( 1 )
-animation = "wall"
+animation = "New Anim"
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -33,6 +36,16 @@ stream = ExtResource( 3 )
 volume_db = -12.0
 pitch_scale = 1.2
 
+[node name="LadderChecker" type="Area2D" parent="."]
+position = Vector2( 0, 10 )
+rotation = -1.5708
+collision_layer = 0
+collision_mask = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LadderChecker"]
+position = Vector2( -6.00006, -4.97264e-05 )
+shape = SubResource( 2 )
+
 [node name="Wallchecker" type="RayCast2D" parent="."]
 position = Vector2( 0, 10 )
 rotation = -1.5708
@@ -41,3 +54,5 @@ cast_to = Vector2( 0, 30 )
 collision_mask = 2
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="body_entered" from="LadderChecker" to="." method="_on_LadderChecker_body_entered"]
+[connection signal="body_exited" from="LadderChecker" to="." method="_on_LadderChecker_body_exited"]
